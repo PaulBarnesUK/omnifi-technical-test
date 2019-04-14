@@ -36,6 +36,8 @@ export default {
         lat: location.latitude,
         lng: location.longitude
       })
+
+      this.google.maps.event.trigger(location.marker, 'click')
     },
     // fetches the locations from the API, returns a promise that resolves with the JSON response
     fetchLocations () {
@@ -62,24 +64,24 @@ export default {
   },
 
   async mounted () {
-    const google = await googleMapsInit()
+    this.google = await googleMapsInit()
     this.locations = await this.fetchLocations()
     const averageGeolocation = calculateAverageGeolocation(this.locationLatLngs)
 
     // Init our map
-    this.map = new google.maps.Map(this.$el.querySelector('#map'), {
+    this.map = new this.google.maps.Map(this.$el.querySelector('#map'), {
       center: averageGeolocation,
       zoom: 5
     })
 
     // Add the markers and popups for each location
     this.locations.forEach(location => {
-      const infoWindow = new google.maps.InfoWindow({
+      const infoWindow = new this.google.maps.InfoWindow({
         content: location.name
       })
 
       // Create the marker and assign it as a new property for the location
-      location.marker = new google.maps.Marker(
+      location.marker = new this.google.maps.Marker(
         {
           position: {
             lat: location.latitude,
