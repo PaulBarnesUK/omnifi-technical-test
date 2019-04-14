@@ -1,5 +1,7 @@
 # technical-test
 
+Some quick notes on this project are available in the [NOTES.md](https://github.com/PaulBarnesUK/omnifi-technical-test/blob/master/NOTES.md)
+
 ## Project setup
 ```
 npm install
