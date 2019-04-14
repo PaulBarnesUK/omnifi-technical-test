@@ -55,8 +55,13 @@ export default {
       zoom: 5
     })
 
-    // Create the markers and add them to our markers array
+    // Add the markers and popups for each location
     this.locations.forEach(location => {
+      const infoWindow = new google.maps.InfoWindow({
+        content: location.name
+      })
+
+      // Create the marker and assign it as a new property for the location
       location.marker = new google.maps.Marker(
         {
           position: {
@@ -66,6 +71,9 @@ export default {
           map,
           title: location.name
         })
+
+      // Assign click handler to the marker to open the info window
+      location.marker.addListener('click', () => infoWindow.open(map, location.marker))
     })
   }
 }
