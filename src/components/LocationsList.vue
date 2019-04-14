@@ -1,5 +1,5 @@
 <template>
-  <ul class="locations">
+  <ul class="locations w100-mobile">
     <li class="location" v-for="(location, index) in locations" @click="handleLocationSelect(location)" :key="index">
       {{ location.name }}
     </li>
