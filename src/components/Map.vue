@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div id="map"></div>
+      <div class="map w100-mobile"></div>
       <LocationsList :locations="this.locations" @locationSelected="handleLocationSelect"></LocationsList>
     </div>
 </template>
@@ -69,7 +69,7 @@ export default {
     const averageGeolocation = calculateAverageGeolocation(this.locationLatLngs)
 
     // Init our map
-    this.map = new this.google.maps.Map(this.$el.querySelector('#map'), {
+    this.map = new this.google.maps.Map(this.$el.querySelector('.map'), {
       center: averageGeolocation,
       zoom: 5
     })
@@ -99,8 +99,16 @@ export default {
 </script>
 
 <style lang="scss">
-    #map {
+    .map {
         flex: 0 0 75%;
         max-width: 75%;
+    }
+
+    @media screen and (max-width: 768px) {
+      .w100-mobile {
+        flex: 0 0 100%;
+        max-width: 100%;
+        height: 50%;
+      }
     }
 </style>
