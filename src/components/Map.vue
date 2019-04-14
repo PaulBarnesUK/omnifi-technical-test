@@ -1,7 +1,7 @@
 <template>
     <div>
       <div id="map"></div>
-      <LocationsList :locations="this.locations"></LocationsList>
+      <LocationsList :locations="this.locations" @locationSelected="handleLocationSelect"></LocationsList>
     </div>
 </template>
 
@@ -29,6 +29,15 @@ export default {
   },
 
   methods: {
+    handleLocationSelect (location) {
+      // Set the center of the map to the selected location
+      this.map.setZoom(7)
+      this.map.panTo({
+        lat: location.latitude,
+        lng: location.longitude
+      })
+    },
+    // fetches the locations from the API, returns a promise that resolves with the JSON response
     fetchLocations () {
       let resolvePromise
       let rejectPromise
@@ -58,7 +67,7 @@ export default {
     const averageGeolocation = calculateAverageGeolocation(this.locationLatLngs)
 
     // Init our map
-    const map = new google.maps.Map(this.$el.querySelector('#map'), {
+    this.map = new google.maps.Map(this.$el.querySelector('#map'), {
       center: averageGeolocation,
       zoom: 5
     })
@@ -76,12 +85,12 @@ export default {
             lat: location.latitude,
             lng: location.longitude
           },
-          map,
+          map: this.map,
           title: location.name
         })
 
       // Assign click handler to the marker to open the info window
-      location.marker.addListener('click', () => infoWindow.open(map, location.marker))
+      location.marker.addListener('click', () => infoWindow.open(this.map, location.marker))
     })
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <ul class="locations">
-    <li v-for="(location, index) in locations" :key="index">
+    <li v-for="(location, index) in locations" @click="handleLocationSelect(location)" :key="index">
       {{ location.name }}
     </li>
   </ul>
@@ -10,7 +10,13 @@
 export default {
   props: [
     'locations'
-  ]
+  ],
+
+  methods: {
+    handleLocationSelect (location) {
+      this.$emit('locationSelected', location)
+    }
+  }
 }
 </script>
 
