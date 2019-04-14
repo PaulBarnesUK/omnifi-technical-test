@@ -6,8 +6,16 @@
 import googleMapsInit from '@/utils/googleMaps'
 
 export default {
+  data () {
+    return {
+      locations: []
+    }
+  },
+
   async mounted () {
     const google = await googleMapsInit()
+
+    this.locations = await this.fetchLocations()
 
     // Init our map
     // eslint-disable-next-line
@@ -18,6 +26,26 @@ export default {
       },
       zoom: 6
     })
+  },
+
+  methods: {
+    fetchLocations () {
+      let resolvePromise
+      let rejectPromise
+
+      fetch('https://s3-eu-west-1.amazonaws.com/omnifi/techtests/locations.json', {
+        method: 'get'
+      }).then(response => {
+        resolvePromise(response.json())
+      }).catch(error => {
+        rejectPromise(error)
+      })
+
+      return new Promise((resolve, reject) => {
+        resolvePromise = resolve
+        rejectPromise = reject
+      })
+    }
   }
 }
 </script>
