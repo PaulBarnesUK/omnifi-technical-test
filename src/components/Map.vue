@@ -4,6 +4,7 @@
 
 <script>
 import googleMapsInit from '@/utils/googleMaps'
+import { calculateAverageGeolocation } from '@/utils/helpers'
 
 export default {
   data () {
@@ -12,32 +13,15 @@ export default {
     }
   },
 
-  async mounted () {
-    const google = await googleMapsInit()
-
-    this.locations = await this.fetchLocations()
-
-    // Init our map
-    const map = new google.maps.Map(this.$el, {
-      center: {
-        lat: 0,
-        lng: 0
-      },
-      zoom: 6
-    })
-
-    // Create the markers and add them to our markers array
-    this.locations.forEach(location => {
-      location.marker = new google.maps.Marker(
+  computed: {
+    locationLatLngs () {
+      return this.locations.map(location => (
         {
-          position: {
-            lat: location.latitude,
-            lng: location.longitude
-          },
-          map,
-          title: location.name
-        })
-    })
+          latitude: location.latitude,
+          longitude: location.longitude
+        }
+      ))
+    }
   },
 
   methods: {
@@ -58,6 +42,31 @@ export default {
         rejectPromise = reject
       })
     }
+  },
+
+  async mounted () {
+    const google = await googleMapsInit()
+    this.locations = await this.fetchLocations()
+    const averageGeolocation = calculateAverageGeolocation(this.locationLatLngs)
+
+    // Init our map
+    const map = new google.maps.Map(this.$el, {
+      center: averageGeolocation,
+      zoom: 5
+    })
+
+    // Create the markers and add them to our markers array
+    this.locations.forEach(location => {
+      location.marker = new google.maps.Marker(
+        {
+          position: {
+            lat: location.latitude,
+            lng: location.longitude
+          },
+          map,
+          title: location.name
+        })
+    })
   }
 }
 </script>
