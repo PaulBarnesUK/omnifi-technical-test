@@ -24,6 +24,10 @@ export default {
   }
 
   #app {
+    height: 100%;
+  }
+
+  #app > div {
     display: flex;
     height: 100%;
   }

@@ -1,8 +1,12 @@
 <template>
-    <div id="map"></div>
+    <div>
+      <div id="map"></div>
+      <LocationsList :locations="this.locations"></LocationsList>
+    </div>
 </template>
 
 <script>
+import LocationsList from '@/components/LocationsList'
 import googleMapsInit from '@/utils/googleMaps'
 import { calculateAverageGeolocation } from '@/utils/helpers'
 
@@ -44,13 +48,17 @@ export default {
     }
   },
 
+  components: {
+    LocationsList
+  },
+
   async mounted () {
     const google = await googleMapsInit()
     this.locations = await this.fetchLocations()
     const averageGeolocation = calculateAverageGeolocation(this.locationLatLngs)
 
     // Init our map
-    const map = new google.maps.Map(this.$el, {
+    const map = new google.maps.Map(this.$el.querySelector('#map'), {
       center: averageGeolocation,
       zoom: 5
     })
