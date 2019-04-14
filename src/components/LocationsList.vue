@@ -1,6 +1,6 @@
 <template>
   <ul class="locations">
-    <li v-for="(location, index) in locations" @click="handleLocationSelect(location)" :key="index">
+    <li class="location" v-for="(location, index) in locations" @click="handleLocationSelect(location)" :key="index">
       {{ location.name }}
     </li>
   </ul>
@@ -21,6 +21,18 @@ export default {
 </script>
 
 <style lang="scss">
+  .location {
+    border-bottom: 1px solid #cccccc;
+    cursor: pointer;
+    list-style-type: none;
+    padding: 15px 20px;
+    transition: all .3s;
+
+    &:hover {
+      background-color: lighten(#cccccc, 15%);
+    }
+  }
+
   .locations {
     flex: 0 0 25%;
     max-width: 25%;
@@ -28,6 +40,6 @@ export default {
     box-sizing: border-box;
     margin: 0;
     overflow: auto;
-    padding: 20px 30px;
+    padding: 0;
   }
 </style>
