@@ -18,13 +18,25 @@ export default {
     this.locations = await this.fetchLocations()
 
     // Init our map
-    // eslint-disable-next-line
     const map = new google.maps.Map(this.$el, {
       center: {
         lat: 0,
         lng: 0
       },
       zoom: 6
+    })
+
+    // Create the markers and add them to our markers array
+    this.locations.forEach(location => {
+      location.marker = new google.maps.Marker(
+        {
+          position: {
+            lat: location.latitude,
+            lng: location.longitude
+          },
+          map,
+          title: location.name
+        })
     })
   },
 
